@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import Note from "../Components/Notes";
 import { Icon, IconButton } from "@material-ui/core";
 import { Row, Col, Card } from "react-bootstrap";
@@ -8,7 +7,6 @@ import { listNotes } from "../Actions/noteActions";
 import { LinkContainer } from "react-router-bootstrap";
 import Paginate from "../Components/Paginate";
 
-import NotesContainer from "../Components/NotesContainer";
 import Loader from "../Components/Loader";
 import Message from "../Components/Message";
 const HomeScreen = ({ history, match }) => {
@@ -27,13 +25,6 @@ const HomeScreen = ({ history, match }) => {
 
   const noteList = useSelector((state) => state.noteList);
   const { loading, error, notes, page, pages } = noteList;
-
-  const noteFilter = useSelector((state) => state.noteFilter);
-  const {
-    loading: loadingFilter,
-    error: errorfilter,
-    notes: notesFilter,
-  } = noteFilter;
 
   useEffect(() => {
     dispatch(listNotes(sort, sortedFilter, pageNumber, keyword));
@@ -81,7 +72,7 @@ const HomeScreen = ({ history, match }) => {
             )}
 
             <LinkContainer to={`/notes/${note._id}`}>
-              <Col key={note._id} sm={12} md={4} lg={3}>
+              <Col key={note._id} sm={12} md={6} lg={4}>
                 <Note
                   text={note.text}
                   title={note.title}
