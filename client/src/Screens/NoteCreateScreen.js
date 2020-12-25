@@ -49,18 +49,6 @@ const Notes = ({ history }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          <Col md={12}>
-            <LinkContainer to={`/`}>
-              <div className="goBack p-3 ml-auto">
-                <IconButton
-                  className="swipeButtons__back"
-                  style={{ fontSize: 30, outline: "none" }}
-                >
-                  <ArrowBackIosIcon fontSize="large" />
-                </IconButton>
-              </div>
-            </LinkContainer>
-          </Col>
           <NotesContainer>
             <Form>
               <Form.Label>Title</Form.Label>
