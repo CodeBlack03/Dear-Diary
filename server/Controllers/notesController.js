@@ -19,10 +19,9 @@ exports.getNoteById = catchAsync(async (req, res, next) => {
 });
 
 exports.createNote = catchAsync(async (req, res, next) => {
-  console.log(req.body);
-  const note = new Note(req.body);
+  console.log("ayayayyaya");
 
-  console.log(note);
+  const note = new Note(req.body);
   await note.save();
   res.status(201).json(note);
 });

@@ -42,6 +42,8 @@ h3 {
   font-family: "Pacifico", cursive;
 }
 .note {
+  margin-right: 10px;
+
   background: #fff;
   border-radius: 7px;
   box-shadow: 0 2px 5px #ccc;
@@ -62,6 +64,9 @@ h3 {
   transform: translate(3px, 3px);
   transition: 0.2s;
   box-shadow: 2px 2px 2px grey;
+}
+.heading__filter {
+  position: relative;
 }
 
 .swipeButtons__add {
@@ -123,4 +128,16 @@ footer {
   justify-content: space-evenly;
 
   /* box-shadow: 0px 10px 53px rgba(0, 0, 0, 0.3) !important; */
+}
+
+.filter {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: space-evenly !important;
+  flex: 1 !important;
+  padding: 10px;
+}
+.grid__notes {
+  display: flex !important;
+  flex-direction: row;
 }

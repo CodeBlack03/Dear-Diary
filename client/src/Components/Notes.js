@@ -13,18 +13,16 @@ import { NOTES_UPDATE_RESET } from "../Constants/notes";
 const Notes = ({ text, title, date }) => {
   return (
     <>
-      <MDBView hover zoom>
-        <Card className="my-3  p-3 rounded note">
-          <div>
-            <h2>{title}</h2>
-            <p className="date">{date}</p>
-          </div>
+      <Card className="my-3  p-3 rounded note">
+        <div>
+          <h2>{title}</h2>
+          <p className="date">{date}</p>
+        </div>
 
-          <p className="content">
-            {text.length > 20 ? text.substring(0, 20) + "...." : text}
-          </p>
-        </Card>
-      </MDBView>
+        <p className="content">
+          {text.length > 20 ? text.substring(0, 20) + "...." : text}
+        </p>
+      </Card>
     </>
   );
 };

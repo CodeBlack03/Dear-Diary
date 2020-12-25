@@ -1,40 +1,10 @@
 import React from "react";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { Route } from "react-router";
+
 import { LinkContainer } from "react-router-bootstrap";
 import SearchBox from "./SearchBox";
 const Header = ({ history, match }) => {
-  let filter = match && match.params ? match.params.filter : "";
-  const sort = match && match.params ? match.params.sort : "";
-
-  const sortAscending = () => {
-    document.location.href = !filter
-      ? `/notes/search/sort/asc`
-      : `/notes/search/${filter}/sort/asc`;
-  };
-  const sortDescending = () => {
-    document.location.href = !filter
-      ? `/notes/search/sort/desc`
-      : `/notes/search/${filter}/sort/desc`;
-  };
-  const weeklyFilter = () => {
-    filter = "week";
-    document.location.href = !sort
-      ? `/notes/search/${filter}`
-      : `/notes/search/${filter}/sort/${sort}`;
-  };
-  const monthlyFilter = () => {
-    filter = "month";
-    document.location.href = !sort
-      ? `/notes/search/${filter}`
-      : `/notes/search${filter}/sort/${sort}`;
-  };
-  const yearlyFilter = () => {
-    filter = "year";
-    document.location.href = !sort
-      ? `/notes/search/${filter}`
-      : `/notes/search/${filter}/sort/${sort}`;
-  };
   return (
     <>
       <header>
@@ -46,7 +16,7 @@ const Header = ({ history, match }) => {
           className="justify-content-space-evenly"
         >
           <Container>
-            <LinkContainer to="/">
+            <LinkContainer to="/" style={{ outline: "none" }}>
               <Navbar.Brand className="p-3">
                 <i
                   className="fas fa-journal-whills"
@@ -57,28 +27,52 @@ const Header = ({ history, match }) => {
             </LinkContainer>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
-            <Route render={({ history }) => <SearchBox history={history} />} />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="ml-auto">
-                <Nav.Link eventKey="1">
-                  <NavDropdown title="Filter" id="filter">
-                    <NavDropdown.Item onClick={weeklyFilter}>
-                      Weekly
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={monthlyFilter}>
-                      Monthly
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={yearlyFilter}>
-                      Yearly
-                    </NavDropdown.Item>
+            {/* <Route render={({ history }) => <SearchBox history={history} />} /> */}
+            <Navbar.Collapse id="basic-navbar-nav" style={{ outline: "none" }}>
+              <Nav className="ml-auto" style={{ outline: "none" }}>
+                <Nav.Link eventKey="1" style={{ outline: "none" }}>
+                  <NavDropdown
+                    title="Filter"
+                    id="filter"
+                    style={{ outline: "none" }}
+                  >
+                    <LinkContainer
+                      to="/notes/search/week"
+                      style={{ outline: "none" }}
+                    >
+                      <NavDropdown.Item>Weekly</NavDropdown.Item>
+                    </LinkContainer>
+
+                    <LinkContainer
+                      to="/notes/search/month"
+                      style={{ outline: "none" }}
+                    >
+                      <NavDropdown.Item>Monthly</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer
+                      to="/notes/search/year"
+                      style={{ outline: "none" }}
+                    >
+                      <NavDropdown.Item>Yearly</NavDropdown.Item>
+                    </LinkContainer>
                   </NavDropdown>
-                  <NavDropdown title="Sort" id="sort">
-                    <NavDropdown.Item onClick={sortAscending}>
-                      Oldest First
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={sortDescending}>
-                      Newest First
-                    </NavDropdown.Item>
+                  <NavDropdown
+                    title="Sort"
+                    id="sort"
+                    style={{ outline: "none" }}
+                  >
+                    <LinkContainer
+                      to="/notes/search/sort/asc"
+                      style={{ outline: "none" }}
+                    >
+                      <NavDropdown.Item>Oldest First</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer
+                      to="/notes/search/sort/desc"
+                      style={{ outline: "none" }}
+                    >
+                      <NavDropdown.Item>Newest First</NavDropdown.Item>
+                    </LinkContainer>
                   </NavDropdown>
                 </Nav.Link>
               </Nav>

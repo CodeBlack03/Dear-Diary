@@ -5,65 +5,72 @@ import { Icon, IconButton } from "@material-ui/core";
 import { Row, Col, Card } from "react-bootstrap";
 import { listNotes } from "../Actions/noteActions";
 import { LinkContainer } from "react-router-bootstrap";
-import Paginate from "../Components/Paginate";
+import moment from "moment";
 
-import Loader from "../Components/Loader";
-import Message from "../Components/Message";
 const HomeScreen = ({ history, match }) => {
-  const keyword = match.params.keyword;
-  const sort =
-    match.params.sort === "asc"
-      ? "createdAt"
-      : match.params.sort === "desc"
-      ? "-createdAt"
-      : "";
-  const dispatch = useDispatch();
-  const pageNumber = match.params.page || 1;
-
+  const sort = match.params.sort ? match.params.sort : "";
   const filter = match.params.filter ? match.params.filter : "";
-  const sortedFilter = sort === "asc" ? "-" + filter : filter;
+  console.log("sort", sort);
+  const dispatch = useDispatch();
 
   const noteList = useSelector((state) => state.noteList);
-  const { loading, error, notes, page, pages } = noteList;
-
+  const { notes } = noteList;
   useEffect(() => {
-    dispatch(listNotes(sort, sortedFilter, pageNumber, keyword));
-  }, [dispatch, filter, pageNumber, sortedFilter, sort, keyword, error]);
-  console.log(notes);
+    dispatch(listNotes(sort, filter));
+
+    // dispatch(listNotes(sort));
+  }, [dispatch, sort, history, filter]);
   const createNote = () => {
     history.push("/notes");
   };
+
   return (
     <>
-      {loading && <Loader />}
-      {error && <Message variant="danger">{error}</Message>}
+      {/* {loading && <Loader />}
+      {error && <Message variant="danger">{error}</Message>} */}
       <Card className="heading">
         <h1 className="swipeButtons my-3 p-3 rounded">My Journal</h1>
       </Card>
-      <Row>
+
+      <Row className="grid__notes">
         {notes.map((note, index) => (
-          <>
-            {sortedFilter && (
-              <Row className="my-3 ">
-                {(sortedFilter === "month" || sortedFilter === "-month") &&
-                  index < notes.length - 1 &&
-                  (notes[index + 1].month !== note.month || index === 0) && (
-                    <h3 className="my-3 p-3" style={{ color: "white" }}>
-                      {note.month}
-                    </h3>
+          <Row>
+            {filter && (
+              <Row className="my-3 heading__filter ">
+                {filter === "month" &&
+                  ((index > 0 &&
+                    new Date(notes[index - 1].date).getUTCMonth() !==
+                      new Date(note.date).getUTCMonth()) ||
+                    index === 0) && (
+                    <div className="filter">
+                      <h3 className="my-3 p-3" style={{ color: "white" }}>
+                        {moment(new Date(note.date)).format("MMMM")}
+                      </h3>
+                    </div>
                   )}
-                {(sortedFilter === "year" || sortedFilter === "-year") &&
-                  index < notes.length - 1 &&
-                  (notes[index + 1].year !== note.year || index === 0) && (
-                    <h3 className="my-3 p-3" style={{ color: "white" }}>
-                      {note.year}
-                    </h3>
+                {filter === "year" &&
+                  ((index > 0 &&
+                    new Date(notes[index - 1].date).getFullYear() !==
+                      new Date(note.date).getFullYear()) ||
+                    index === 0) && (
+                    <div className="filter">
+                      <h3 className="my-3 p-3" style={{ color: "white" }}>
+                        {moment(new Date(note.date)).format("YYYY")}
+                      </h3>
+                    </div>
                   )}
-                {(sortedFilter === "week" || sortedFilter === "-week") &&
-                  index < notes.length - 1 &&
-                  (notes[index + 1].week !== note.week || index === 0) && (
+                {filter === "week" &&
+                  ((index > 0 &&
+                    !moment(new Date(notes[index - 1].date)).isSame(
+                      new Date(note.date),
+                      "week"
+                    )) ||
+                    index === 0 ||
+                    index === notes.length - 1) && (
                     <div className="my-1 p-3">
-                      <h3 style={{ color: "white" }}>{note.week}</h3>
+                      <h3 style={{ color: "white" }}>
+                        {moment(new Date(note.date)).format("WW")}
+                      </h3>
                       <p style={{ color: "white" }}>st</p>
                       <h3 style={{ color: "white" }}>Week</h3>
                     </div>
@@ -71,19 +78,13 @@ const HomeScreen = ({ history, match }) => {
               </Row>
             )}
 
-            <LinkContainer to={`/notes/${note._id}`}>
-              <Col key={note._id} sm={12} md={6} lg={4}>
-                <Note
-                  text={note.text}
-                  title={note.title}
-                  date={note.createdAt.substring(0, 10)}
-                />
+            <LinkContainer to={`/notes/${note.id}`}>
+              <Col key={note.id} sm={12} md={6} lg={4}>
+                <Note text={note.text} title={note.title} date={note.date} />
               </Col>
             </LinkContainer>
-          </>
+          </Row>
         ))}
-
-        <Col></Col>
       </Row>
       <Row>
         <Col>
@@ -101,14 +102,14 @@ const HomeScreen = ({ history, match }) => {
           </div>
         </Col>
       </Row>
-      <Paginate
+      {/* <Paginate
         pages={pages}
         page={page}
         filter={sortedFilter ? sortedFilter : ""}
         sort={
           sort === "-createdAt" ? "desc" : sort === "createdAt" ? "asc" : ""
         }
-      ></Paginate>
+      ></Paginate> */}
     </>
   );
 };

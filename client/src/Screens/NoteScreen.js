@@ -20,6 +20,7 @@ const NoteScreen = ({ match, history }) => {
   //   const [date, setDate] = useState("");
   const noteDetails = useSelector((state) => state.noteDetails);
   const { loading, error, note } = noteDetails;
+  console.log(note);
 
   const noteDelete = useSelector((state) => state.noteDelete);
   const {
@@ -38,11 +39,9 @@ const NoteScreen = ({ match, history }) => {
     }
   }, [dispatch, match, successDelete, history]);
   const deleteHandler = () => {
-    dispatch(deleteNote(noteId));
+    dispatch(deleteNote(noteId - 1));
   };
-  const goBack = () => {
-    document.location.href = "/";
-  };
+
   return (
     <>
       {loadingDelete && <Loader />}
@@ -72,7 +71,7 @@ const NoteScreen = ({ match, history }) => {
                   <h2>{note.title}</h2>
                 </ListGroup.Item>
                 <ListGroup.Item style={{ float: "right" }}>
-                  <p>{note.createdAt && note.createdAt.substring(0, 10)}</p>
+                  <p>{note.date}</p>
                 </ListGroup.Item>
               </ListGroup>
             </Col>

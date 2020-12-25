@@ -1,29 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { LinkContainer } from "react-router-bootstrap";
+import { LinkContainer, Col } from "react-router-bootstrap";
 import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
 import { useDispatch, useSelector } from "react-redux";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+
 import Loader from "../Components/Loader";
 import Message from "../Components/Message";
-import { ButtonBase, IconButton } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import NotesContainer from "../Components/NotesContainer";
-import {
-  Row,
-  Container,
-  Col,
-  Image,
-  ListGroup,
-  Card,
-  Button,
-  Form,
-  FormControl,
-} from "react-bootstrap";
-import { createNotes, listNoteDetails } from "../Actions/noteActions";
+import { Form } from "react-bootstrap";
+import { createNotes } from "../Actions/noteActions";
 import { NOTES_CREATE_RESET } from "../Constants/notes";
 const Notes = ({ history }) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+  const [date, setDate] = useState("");
 
   const noteCreate = useSelector((state) => state.noteCreate);
   const { loading, error, success, note } = noteCreate;
@@ -34,17 +26,16 @@ const Notes = ({ history }) => {
     error: errorDetails,
     note: noteDetail,
   } = noteDetails;
-
   useEffect(() => {
     if (success) {
       dispatch({ type: NOTES_CREATE_RESET });
-      history.push(`/notes/${note._id}`);
+      history.push(`/notes/${note.id}`);
     }
   }, [dispatch, success, history, error, errorDetails]);
 
   const createNoteHandler = (e) => {
     e.preventDefault();
-    dispatch(createNotes(title, text));
+    dispatch(createNotes(title, text, date));
   };
   console.log(error);
 
@@ -58,6 +49,18 @@ const Notes = ({ history }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+          <Col md={12}>
+            <LinkContainer to={`/`}>
+              <div className="goBack p-3 ml-auto">
+                <IconButton
+                  className="swipeButtons__back"
+                  style={{ fontSize: 30, outline: "none" }}
+                >
+                  <ArrowBackIosIcon fontSize="large" />
+                </IconButton>
+              </div>
+            </LinkContainer>
+          </Col>
           <NotesContainer>
             <Form>
               <Form.Label>Title</Form.Label>
@@ -69,6 +72,16 @@ const Notes = ({ history }) => {
                   className="createCard"
                   required={true}
                   onChange={(e) => setTitle(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Label>Date</Form.Label>
+              <Form.Group controlId="date">
+                <Form.Control
+                  type="date"
+                  value={date}
+                  className="createCard"
+                  required={true}
+                  onChange={(e) => setDate(e.target.value)}
                 ></Form.Control>
               </Form.Group>
               <Form.Group controlId="text">

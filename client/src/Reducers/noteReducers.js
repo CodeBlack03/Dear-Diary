@@ -17,6 +17,10 @@ import {
   NOTES_LIST_FAIL,
   NOTES_LIST_REQUEST,
   NOTES_LIST_SUCCESS,
+  NOTES_SORT_FAIL,
+  NOTES_SORT_REQUEST,
+  NOTES_SORT_RESET,
+  NOTES_SORT_SUCCESS,
   NOTES_UPDATE_FAIL,
   NOTES_UPDATE_REQUEST,
   NOTES_UPDATE_RESET,
@@ -30,9 +34,7 @@ export const listNotesReducer = (state = { notes: [] }, action) => {
     case NOTES_LIST_SUCCESS:
       return {
         loading: false,
-        notes: action.payload.data,
-        pages: action.payload.pagination.pages,
-        page: action.payload.pagination.page,
+        notes: action.payload,
       };
     case NOTES_LIST_FAIL:
       return { loading: false, error: action.payload };
@@ -111,6 +113,21 @@ export const noteUpdateReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case NOTES_UPDATE_RESET:
       return { note: {} };
+    default:
+      return state;
+  }
+};
+
+export const notesSortReducer = (state = { notes: [] }, action) => {
+  switch (action.type) {
+    case NOTES_SORT_REQUEST:
+      return { loading: true, ...state };
+    case NOTES_SORT_SUCCESS:
+      return { loading: false, success: true, notes: action.payload };
+    case NOTES_SORT_FAIL:
+      return { loading: false, error: action.payload };
+    case NOTES_SORT_RESET:
+      return { notes: [] };
     default:
       return state;
   }
